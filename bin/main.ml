@@ -17,7 +17,7 @@ let setup () =
 let main_btn x y text = Button.create x y 200 50 text Color.brown Color.yellow 20
 
 let loop () =
-  let reset_board_btn = main_btn 1000 160 "reset bord" in
+  let reset_board_btn = main_btn 1000 160 "resedd bord" in
 
   while not (window_should_close ()) do
     let mods = ref false in
