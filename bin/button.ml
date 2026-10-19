@@ -16,7 +16,6 @@ let all_buttons = ref []
 
 let center_text x y w h text text_size =
   let text_width = Raylib.measure_text text text_size in
-  print_endline ("text width: " ^ string_of_int text_width);
   (
     x + (w / 2 - text_width / 2),
     y + (h / 2 - text_size / 2)
