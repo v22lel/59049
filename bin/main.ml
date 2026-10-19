@@ -53,16 +53,16 @@ let main_btn x y text = Button.create x y 200 50 text Color.brown Color.yellow 2
 
 
 
-let loop () =
-  Board3.create_rect_board 3 6 6;
+let board = Board3.create_rect_board 3 6 6
 
+let loop () =
   while not (window_should_close ()) do
     begin_drawing ();
 
     Raylib.draw_rectangle 0 0 window_w window_h Color.blue;
     D.draw_image (G.img ()).logo 0 0 window_w 100;
 
-    Board3.draw_board ();
+    Board3.draw_board board;
 
     Button.draw_all ();
     end_drawing ()

@@ -17,6 +17,10 @@ t_behavior = {
   merge: t -> t -> t option;
 }
 
+let pos = function
+  | Unset xy -> xy
+  | Set (stat, _) -> stat.dst
+
 let create bev xy =
   Set ({ src = xy; dst = xy; p = 1.0; }, bev)
 

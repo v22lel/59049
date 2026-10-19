@@ -152,12 +152,7 @@
     in
     let merged = merge tiles in
 
-    mods := (merged <> tiles) || !mods;
-
-    let rec insert = function
-      | ([], idx :: rest) -> (board.(idx) <- Unset; insert ([], rest))
-      | ([], _) -> ()
-      | (tile :: t_rest, idx :: i_rest) -> (
+    mods := (merged <> tiles) || !mods;function
         if tile.dst <> idx then
           mods := (!mods || true);
         board.(idx) <- Set { tile with

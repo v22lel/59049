@@ -23,3 +23,6 @@ module Num_tile = Dune__exe__Num_tile
 
 (** @canonical Dune__exe.Tile *)
 module Tile = Dune__exe__Tile
+
+(** @canonical Dune__exe.Utils *)
+module Utils = Dune__exe__Utils
