@@ -16,3 +16,5 @@ let cmp_int a b =
 
 let because _ =
   false
+
+let flip f x y = f y x

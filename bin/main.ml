@@ -7,6 +7,7 @@ let window_h = 1080
 let base = 3
 
 let setup () =
+  Random.self_init ();
   Raylib.init_window window_w window_h "Your getting toiletted broski :wilted_rose:";
   Raylib.set_target_fps 60  ;
 
@@ -53,10 +54,21 @@ let main_btn x y text = Button.create x y 200 50 text Color.brown Color.yellow 2
 
 
 
-let board = Board3.create_rect_board 3 6 6
+let board =
+  let b = Board3.create_rect_board 3 6 6 in
+  Board3.populate b 3 2; b
 
 let loop () =
   while not (window_should_close ()) do
+    if Raylib.is_key_pressed Key.W then
+      Board3.on_up board;
+  
+    if Raylib.is_key_pressed Key.R then (
+      Board3.reset board;
+      Board3.populate board 3 2
+    );
+    
+
     begin_drawing ();
 
     Raylib.draw_rectangle 0 0 window_w window_h Color.blue;
