@@ -18,3 +18,6 @@ let because _ =
   false
 
 let flip f x y = f y x
+
+let list_iteri_pair fn lst =
+  ()

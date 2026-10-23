@@ -1,1 +1,1 @@
-bin/tile.ml:
+bin/tile.ml: Board Vec2

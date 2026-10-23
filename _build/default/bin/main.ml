@@ -15,68 +15,47 @@ let setup () =
     logo = Raylib.load_texture "logo.png";
   })
 
-let main_btn x y text = Button.create x y 200 50 text Color.brown Color.yellow 20
-
-(* let loop () =
-  let reset_board_btn = main_btn 1000 160 "resedd bord" in
-
-  while not (window_should_close ()) do
-    let mods = ref false in
-    if Raylib.is_key_pressed Key.W then
-      Board2.on_up base mods;
-    if Raylib.is_key_pressed Key.S then
-      Board2.on_down base mods;
-    if Raylib.is_key_pressed Key.A then
-      Board2.on_left base mods;
-    if Raylib.is_key_pressed Key.D then
-      Board2.on_right base mods;
-    
-    if !mods then
-      Board2.populate base 2;
-    
-    if Button.is_clicked reset_board_btn then (
-      ignore (Board2.reset ());
-      ignore (Board2.populate base 10);
-      ()
-    );
-
-    begin_drawing ();
-
-    Raylib.draw_rectangle 0 0 window_w window_h Color.blue;
-    D.draw_image (G.img ()).logo 0 0 window_w 100;
-
-    Board2.draw_board ();
-
-    Button.draw_all ();
-    end_drawing ()
-  done;
-  close_window () *)
-
-
-
-let board =
-  let b = Board3.create_rect_board 3 6 6 in
-  Board3.populate b 3 2; b
+let global_actions = Queue.create ()
+let global_submit action =
+  Queue.add action global_actions
 
 let loop () =
-  while not (window_should_close ()) do
-    if Raylib.is_key_pressed Key.W then
-      Board3.on_up board;
-  
-    if Raylib.is_key_pressed Key.R then (
-      Board3.reset board;
-      Board3.populate board 3 2
+  (* let board = Board.create_rectangular 6 6 in *)
+  let board = Board.create_rotated_square 3 in
+  let exec = Board.action_executor board in
+
+  Board.action_populate_board (fun pos -> NumTile.create_bev 3 |> Board.create_tile pos) board global_submit 20;
+
+  while not (window_should_close ()) do  
+    if Raylib.is_key_pressed Key.W then (
+      Board.on_up board global_submit
     );
-    
+    if Raylib.is_key_pressed Key.A then (
+      Board.on_left board global_submit
+    );
+    if Raylib.is_key_pressed Key.S then (
+      Board.on_down board global_submit
+    );
+    if Raylib.is_key_pressed Key.D then (
+      Board.on_right board global_submit
+    );
+
+    if Raylib.is_key_pressed Key.F then (
+      print_endline "sending message";
+      global_submit (Board.DoSendMsg (Board.create_msg "decrement"))
+    );
 
     begin_drawing ();
 
     Raylib.draw_rectangle 0 0 window_w window_h Color.blue;
     D.draw_image (G.img ()).logo 0 0 window_w 100;
 
-    Board3.draw_board board;
+    while not (Queue.is_empty global_actions) do
+      exec (Queue.pop global_actions)
+    done;
 
-    Button.draw_all ();
+    Board.tick_board board global_submit;
+
     end_drawing ()
   done;
   close_window ()
